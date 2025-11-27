@@ -13,5 +13,14 @@
     <div class="wd">
         <img src=" {% static 'images/timeSaver.png' %}" alt="" style="width: 400px;">
     </div>
+
+    {{names}}
+    {% for name in names %}
+       {% if name != "John"  %}
+          <h1>{{name}}</h1>
+       {% endif %}
+       
+    {% endfor %}
+    <p>{{age}}</p>
 </body>
 </html>

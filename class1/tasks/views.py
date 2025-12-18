@@ -7,7 +7,37 @@ from datetime import date, timedelta
 from django.db.models import Q,Count, Max,Min,Avg
 # Create your views here.
 def manager_dashboard(request):
-    return render(request, "dashboard/manager_dashboard.html")
+    all_tasks = Task.objects.select_related(
+        'details').prefetch_related('assigned_to').all()
+    # all_tasksCount = all_tasks.count()
+    # # pending_task = Task.objects.filter(status = 'PENDING')
+    # # pending_taskCount = pending_task.count()
+    # pending_taskCount = Task.objects.filter(status = 'PENDING').count()
+
+    # completed_task = Task.objects.filter(status = 'COMPLETED')
+    # completed_taskCount = completed_task.count()
+    # in_progress_task = Task.objects.filter(status = 'IN_PROGRESS')
+    # in_progress_taskCount = in_progress_task.count()
+
+    counts = Task.objects.aggregate(
+        all_tasksCount = Count('id'),
+        pending_taskCount =  Count('id', filter=Q(status = 'PENDING')),
+        completed_taskCount =  Count('id', filter=Q(status = 'COMPLETED')),
+        in_progress_taskCount =  Count('id', filter=Q(status = 'IN_PROGRESS'))  
+        )
+    context = {
+        'all_tasks':all_tasks,
+        # 'all_tasksCount':all_tasksCount,
+        # # 'pending_task': pending_task,
+        # 'pending_taskCount':pending_taskCount,
+        # # 'completed_task':completed_task,
+        # 'completed_taskCount':completed_taskCount,
+        # # 'in_progress_task':in_progress_task,
+        # 'in_progress_taskCount':in_progress_taskCount,
+        'counts': counts,
+    }
+
+    return render(request, "dashboard/manager_dashboard.html", context)
 
 def user_dashboard(request):
     return render(request, "dashboard/user_dashboard.html")

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% comment %} <div>
+        <ol>
+        {% for pending in pending_tasks %}
+            <li>{{pending}}</li>
+        {% endfor %}
+       </ol>
+    </div>
+    <h2>Today Tasks:</h2>
+    <ol>
+        {% for today_task in today_tasks %}
+            <li>{{today_task}}</li>
+        {% endfor %}
+    </ol>
+
+    <h2>yesterday_tasks:</h2>
+    <ol>
+        {% for yesterday_task in yesterday_tasks %}
+            <li>{{ yesterday_task }}</li>
+        {% endfor %}
+    </ol>
+
+    
+    <h2>exclude: priority = low</h2>
+    <ol>
+        {% for prior_task in prior_tasks %}
+            <li>{{ prior_task }} : {{prior_task.priority}}</li>
+        {% endfor %}
+    </ol>
+
+
+    <div>
+        {% for task in task_contain %}
+           <h3>{{task.title}} : status : {{task.status}}</h3>
+        {% endfor %}
+    </div>
+
+    <div style="border: 2px solid red; padding: 5px">Query: <br> exist() : {{isExist}}</div> {% endcomment %}
+
+    {% comment %} {{taskDetail}} {% endcomment %}
+
+    <h1>Selected task (Foreign key, OneToOne Field</h1>
+    <h2>
+        All tasks:
+    </h2>
+    <div> <ul>
+        {% comment %} {% for task in  all_tasks%}
+          <li>
+            <p>{{task.title}}</p>
+            <span>{{task.details.priority}}</span>
+          </li>
+        {% endfor %} {% endcomment %}
+
+        {% comment %} from taskDetail relation {% endcomment %}
+        {% comment %} {% for task in  all_tasks%}
+          <li>
+            <p>{{task.task.title}}</p>
+            <span>{{task.priority}}</span>
+          </li>
+        {% endfor %} {% endcomment %}
+        
+        {% comment %} for forieng key relation  {% endcomment %}
+        {% comment %} {% for task in  all_tasks%}
+          <li>
+            <p>{{task.title}}</p>
+            <span>{{task.project.name}}</span>
+          </li>
+        {% endfor %} {% endcomment %}
+
+        {% comment %} {% for project in  prefetch_related_projects%}
+          <li>
+            <p>{{project.name}}</p>
+            <ol>
+                {% for task in project.task_set.all%}
+               <li>{{task.title}}</li>
+            {% endfor %}
+            </ol>
+            
+          </li>
+        {% endfor %}  {% endcomment %}
+        
+        {% comment %} prefetch_related_tasks {% endcomment %}
+        {% for task in  prefetch_related_tasks%}
+          <li>
+            <p>{{task.title}}</p>
+            <ol>
+                {% for emp in task.assigned_to.all%}
+               <li>{{emp.name}}</li>
+            {% endfor %}
+            </ol>
+            
+          </li>
+        {% endfor %}
+
+        <h2>for Employee related prefetch</h2>
+        {% for emp in  prefetch_related_emp%}
+          <li>
+            <p>{{emp.name}}</p>
+            <ol>
+                {% for task in emp.tasks.all%}
+               <li>{{task.title}}</li>
+            {% endfor %}
+            </ol>
+            
+          </li>
+        {% endfor %}
+
+
+         
+    </ul></div>
+    <div><h1>Aggregate Functions</h1>
+     <ul>
+        <li>Total task counts: {{task_count.num_task}}</li>
+     </ul>
+    </div>
+    
+    {{task_annotate_in_projects}}
+<ul>
+    {% for project  in  task_annotate_in_projects%}
+    <li>{{project.name }}: {{project.num_task}}</li>{% endfor %}
+</ul>
+   
+</body>
+</html>

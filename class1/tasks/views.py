@@ -7,8 +7,10 @@ from datetime import date, timedelta
 from django.db.models import Q,Count, Max,Min,Avg
 # Create your views here.
 def manager_dashboard(request):
-    all_tasks = Task.objects.select_related(
-        'details').prefetch_related('assigned_to').all()
+   
+    # print(type)
+    # all_tasks = Task.objects.select_related(
+    #     'details').prefetch_related('assigned_to').all()
     # all_tasksCount = all_tasks.count()
     # # pending_task = Task.objects.filter(status = 'PENDING')
     # # pending_taskCount = pending_task.count()
@@ -19,14 +21,32 @@ def manager_dashboard(request):
     # in_progress_task = Task.objects.filter(status = 'IN_PROGRESS')
     # in_progress_taskCount = in_progress_task.count()
 
+    type = request.GET.get('type', 'all')
+    
+
     counts = Task.objects.aggregate(
         all_tasksCount = Count('id'),
         pending_taskCount =  Count('id', filter=Q(status = 'PENDING')),
         completed_taskCount =  Count('id', filter=Q(status = 'COMPLETED')),
         in_progress_taskCount =  Count('id', filter=Q(status = 'IN_PROGRESS'))  
         )
+    
+    #retrieving task data
+    base_query = Task.objects.select_related(
+        'details').prefetch_related('assigned_to')
+    if type== 'completed':
+        tasks = base_query.filter(status = 'COMPLETED')
+    elif type== 'in-progress':
+        tasks = base_query.filter(status = 'IN_PROGRESS')
+    elif type== 'pending':
+        tasks = base_query.filter(status = 'PENDING')
+    elif type == 'all':
+        tasks = base_query.all()
+
+
     context = {
-        'all_tasks':all_tasks,
+        # 'all_tasks':all_tasks,
+        'tasks':tasks,
         # 'all_tasksCount':all_tasksCount,
         # # 'pending_task': pending_task,
         # 'pending_taskCount':pending_taskCount,

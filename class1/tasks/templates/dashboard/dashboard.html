@@ -59,7 +59,8 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
           {% comment %} Total Task 1  {% endcomment %}
-          <div class="bg-white p-6 rounded-xl shadow-sm">
+          <a href=" {% url 'manager-dashboard' %}">
+            <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500 mb-4 uppercase">
               Total Task
             </h3>
@@ -87,9 +88,12 @@
               </div>
             </div>
           </div>
+          </a>
+          
 
           {% comment %} Completed Task {% endcomment %}
-          <div class="bg-white p-6 rounded-xl shadow-sm">
+          <a href=" {% url 'manager-dashboard' %}?type=completed ">
+            <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500 mb-4 uppercase">
               Completed Task
             </h3>
@@ -116,9 +120,10 @@
               </div>
             </div>
           </div>
+          </a>
 
-          {% comment %} Total Task 3 {% endcomment %}
-          <div class="bg-white p-6 rounded-xl shadow-sm">
+          {% comment %} IN PROGRESS TASK Task 3 {% endcomment %}
+           <a href=" {% url 'manager-dashboard' %}?type=in-progress "><div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500 mb-4 uppercase">
               Task in progress
             </h3>
@@ -144,10 +149,12 @@
                 </svg>
               </div>
             </div>
-          </div>
+          </div></a>
+          
 
-          {% comment %} Total Task 4 {% endcomment %}
-          <div class="bg-white p-6 rounded-xl shadow-sm">
+          {% comment %} pending Task 4 {% endcomment %}
+           <a href=" {% url 'manager-dashboard' %}?type=pending ">
+            <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500 mb-4 uppercase">
               Todos
             </h3>
@@ -173,7 +180,8 @@
                 </svg>
               </div>
             </div>
-          </div>
+          </div></a>
+          
         </div>
 
       {% block tasks %}

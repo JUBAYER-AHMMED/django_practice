@@ -11,8 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
-    {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
-     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+     {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
 
     <style>
       body {
@@ -87,7 +87,7 @@
                 </svg>
               </div>
             </div>
-          </div>
+            </div>
           </a>
           
 
@@ -119,11 +119,11 @@
                 </svg>
               </div>
             </div>
-          </div>
+           </div>
           </a>
 
           {% comment %} IN PROGRESS TASK Task 3 {% endcomment %}
-           <a href=" {% url 'manager-dashboard' %}?type=in-progress "><div class="bg-white p-6 rounded-xl shadow-sm">
+          <a href=" {% url 'manager-dashboard' %}?type=in-progress "><div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500 mb-4 uppercase">
               Task in progress
             </h3>
@@ -149,11 +149,12 @@
                 </svg>
               </div>
             </div>
-          </div></a>
+           </div>
+          </a>
           
 
           {% comment %} pending Task 4 {% endcomment %}
-           <a href=" {% url 'manager-dashboard' %}?type=pending ">
+          <a href=" {% url 'manager-dashboard' %}?type=pending ">
             <div class="bg-white p-6 rounded-xl shadow-sm">
             <h3 class="text-sm font-medium text-gray-500 mb-4 uppercase">
               Todos
@@ -180,9 +181,16 @@
                 </svg>
               </div>
             </div>
-          </div></a>
+           </div>
+          </a>
           
         </div>
+        {% if messages %} 
+           {% for message in messages %}
+              <p class="px-2 py-1 {% if message.tags == 'success' %}bg-green-500{% endif %} ">{{message}}</p>
+           {% endfor %}
+          
+        {% endif %}
 
       {% block tasks %}
       

@@ -9,7 +9,10 @@
             
 
              <div>task title</div>
-            <div>priority</div>
+            <div class="flex justify-between">
+              <span>priority</span>
+              <span>update</span>
+            </div>
             <div>team</div>
             <div class="flex justify-between">
               <div>created at</div>
@@ -22,10 +25,19 @@
           <div
             class="grid grid-cols-4 gap-6   p-4 text-sm ">
           <div class="flex gap-3 items-center">
-                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div class="w-2 h-2 {% if task.status == 'COMPLETED' %} bg-green-500 {% elif task.status == 'PENDING' %} bg-red-400 {% elif task.status == 'IN_PROGRESS' %} bg-yellow-500 {% endif %}  rounded-full"></div>
                 <span class="font-semibold">{{task.title}}</span>
             </div>
-            <div ><span class="px-3 py-1 bg-blue-50 rounded-full text-sm font-semibold text-blue-500">{{task.details.get_priority_display}}</span></div>
+            <div class="flex justify-between">
+              <span class="px-3 py-1 bg-blue-50 rounded-full text-sm font-semibold text-blue-500">
+                {{task.details.get_priority_display}}
+              </span>
+              <a href=" {% url 'update-task' task.id %} " class="px-6 py-1 bg-blue-50">Edit</a>
+              <form action=" {% url 'delete-task' task.id %} " method="POST">
+                {% csrf_token %} 
+                <button type='submit' class="px-6 py-1 bg-red-50">Delete</button>
+              </form>
+            </div>
             <div class="flex -space-x-2">
                 {% for emp in task.assigned_to.all %}
                 <div class="w-8 h-8 rounded-full bg-blue-400 flex justify-center items-center text-white text-sm border-2 border-white">{{emp.name|slice:':2'}}</div>{% endfor %}

@@ -8,21 +8,23 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
 </head>
 <body>
-    
-
     <div class="w-1/2 mt-8 mx-auto shadow-md p-4">
-        {% if message %} 
-          <p>{{message}}</p>
+        {% if messages %} 
+           {% for message in messages %}
+              <p class="px-2 py-1 {% if message.tags == 'success' %}bg-green-500{% endif %} ">{{message}}</p>
+           {% endfor %}
+          
         {% endif %}
 
         
    
-    <form action="" method="POST">
+      <form action="" method="POST">
        {% comment %} <input type="text" class="border-2 w-full p-6"> {% endcomment %}
         {% csrf_token %}
-        {{form.as_p}}
+        {{task_form.as_p}}
+        {{task_detail_form.as_p}}
         <button class="block mx-auto rounded-md my-4 px-6 py-3 bg-lime-400 shadow-sm" type="submit">Submit</button>
-    </form>
+      </form>
     </div>
 </body>
 </html>

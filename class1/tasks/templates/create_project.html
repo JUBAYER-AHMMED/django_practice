@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Task Details{% endblock title %}
+{% block content %}
+<div class="w-1/2 mx-auto bg-cyan-300/80 my-6">
+            <h1>Create Project</h1>
+
+        <form method="post" class="w-full">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="w-full flex justify-center mt-3 mb-3"><button type="submit" class="bg-blue-400 shadow-lg">Create Project</button></div>
+            
+        </form>
+</div>
+
+{% endblock content %}

@@ -1,5 +1,5 @@
 from django import forms
-from tasks.models import Task, TaskDetail
+from tasks.models import Task, TaskDetail,Project
 
 # django Form
 class TaskForm(forms.Form):
@@ -29,7 +29,7 @@ class StyledFormMixin:
         for field_name,field in self.fields.items():
             if isinstance(field.widget, forms.TextInput):
                 field.widget.attrs.update({
-                    'class': f"{self.default_classes} bg-gray-200",
+                    'class': f"{self.default_classes} bg-gray-200 ",
                     'placeholder': f"Enter {field.label.lower()}"
                 })
             elif isinstance(field.widget,forms.Textarea):
@@ -66,8 +66,18 @@ class TaskModelForm(StyledFormMixin, forms.ModelForm):
 class TaskDetailModelForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = TaskDetail
-        fields = ['priority','notes']
+        fields = ['priority','notes','asset']
 
     def __init__(self,*arg,**kwarg):
         super().__init__(*arg, **kwarg)
         self.apply_styled_widgets()
+
+
+
+class ProjectForm(StyledFormMixin,forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['name', 'description', 'start_date']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'})
+        }

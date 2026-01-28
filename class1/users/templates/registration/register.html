@@ -1,14 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-</head>
-<body>
-     <h1>Registration page is responding!</h1>
+{% extends "base.html" %}
+{% block content %}
+     <h1 class="w-1/2 text-center text-3xl md:text-4xl font-semibold mt-6 mb-4">Registration page</h1>
         {% if messages %} 
            {% for message in messages %}
               <p class="px-2 py-1 {% if message.tags == 'success' %}bg-green-500{% endif %} ">{{message}}</p>
@@ -21,7 +13,7 @@
               {{error}}
            {% endfor %}
         {% endif %}
-     <form action="" method="POST">
+     <form action="" method="POST" class='w-1/2 mx-auto mb-8'>
         {% csrf_token %}
         {% for field in form %}
         <p>
@@ -39,7 +31,6 @@
            {% endif %}
         </p>
         {% endfor %}
-        <button type="submit">Sign Up</button>
+        <button type="submit" class="bg-blue-600 px-3 py-2 text-white my-3 rounded">Sign Up</button>
      </form>
-</body>
-</html>
+{% endblock content %}

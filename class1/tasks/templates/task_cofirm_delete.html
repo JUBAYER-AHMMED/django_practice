@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Task Details{% endblock title %}
+{% block content %}
+<div class="w-1/2 mx-auto bg-cyan-300/80">
+
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <button type="submit">Yes, Delete</button>
+    </form>
+</div>
+
+{% endblock content %}

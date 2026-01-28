@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Task Details{% endblock title %}
+{% block content %}
+<div class="w-1/2 mx-auto bg-cyan-100/80 mt-20">
+
+<h1 class="h-10 font-semibold text-2xl text-center">Projects</h1>
+
+<ul>
+    {% for project in projects %}
+        <li>{{ project.name }} - {{ project.description }}</li>
+    {% empty %}
+        <li>No projects found.</li>
+    {% endfor %}
+</ul>
+
+
+</div>
+<div class="w-full flex justify-center my-4 ">
+    <a href="{% url 'create-project' %}" class="px-2 py-1 bg-red-300 rounded drop-shadow shadow-md">Create New Project</a>
+
+</div>
+{% endblock content %}

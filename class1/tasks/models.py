@@ -1,17 +1,15 @@
 from django.db import models
-
-from django.db.models.signals import post_save, pre_save , post_delete, m2m_changed
-from django.dispatch import receiver
-from django.core.mail import send_mail
+# from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 
-class Employee(models.Model):
-    name = models.CharField( max_length = 100)
-    email = models.EmailField(unique = True)
-    #tasks
-    def __str__(self):
-        return self.name
+# class Employee(models.Model):
+#     name = models.CharField( max_length = 100)
+#     email = models.EmailField(unique = True)
+#     #tasks
+#     def __str__(self):
+#         return self.name
 
 class Project(models.Model):
     name =  models.CharField(max_length=100)
@@ -37,14 +35,14 @@ class Task(models.Model):
                                 default=1
                                 )
     
-    assigned_to = models.ManyToManyField(Employee,related_name='tasks')
+    # assigned_to = models.ManyToManyField(Employee,related_name='tasks')
+    assigned_to = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='tasks')
 
 
     title = models.CharField(max_length=250)
     description = models.TextField()
     due_date = models.DateField()
     status = models.CharField(max_length=15, choices=STATUS_CHOICES,default='PENDING')
-    is_completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #taskdetail
@@ -66,7 +64,7 @@ class TaskDetail(models.Model):
         on_delete  = models.DO_NOTHING,
         related_name="details"
         )
-    # assigned_to = models.CharField(max_length=255)
+    asset = models.ImageField(upload_to="tasks_asset",blank= True, null = True, default="default_img.png")
     priority = models.CharField( max_length = 1, choices = PRIORITY_OPTIONS , default=LOW) 
     notes = models.TextField(blank=True, null = True )
     
@@ -115,33 +113,35 @@ class TaskDetail(models.Model):
 
 #         instance.save()
 
-@receiver(pre_save,sender=Task)
 
-def notify_task_creation(sender,instance, **kwargs):
-    print('sender', sender)
-    print('instance', instance)
-    print(kwargs)
-    instance.is_completed = True
+# #signals
+# @receiver(pre_save,sender=Task)
+
+# def notify_task_creation(sender,instance, **kwargs):
+#     print('sender', sender)
+#     print('instance', instance)
+#     print(kwargs)
+#     instance.is_completed = True
 
 
-@receiver(post_delete, sender = Task)
-def delete_associate_details(sender, instance,**kwargs):
-    if instance.details:
-        print(instance)
-        instance.details.delete()
-        print('deleted successfully')
+# @receiver(post_delete, sender = Task)
+# def delete_associate_details(sender, instance,**kwargs):
+#     if instance.details:
+#         print(instance)
+#         instance.details.delete()
+#         print('deleted successfully')
 
-@receiver(m2m_changed, sender=Task.assigned_to.through)
-def notify_employees_on_task_creation(sender, instance,action, **kwargs):
-    if action == 'post_add':
-        print(instance, instance.assigned_to.all())
-        assigned_emails = [emp.email for emp in instance.assigned_to.all()]
-        print("checking...", assigned_emails)
+# @receiver(m2m_changed, sender=Task.assigned_to.through)
+# def notify_employees_on_task_creation(sender, instance,action, **kwargs):
+#     if action == 'post_add':
+#         print(instance, instance.assigned_to.all())
+#         assigned_emails = [emp.email for emp in instance.assigned_to.all()]
+#         print("checking...", assigned_emails)
 
-        send_mail(
-            "New Task Assigned",
-            f"You have been assigned to the task: {instance.title}",
-            "jubayerahmmed105@gmail.com",
-            assigned_emails,
-            fail_silently = False
-        )
+#         send_mail(
+#             "New Task Assigned",
+#             f"You have been assigned to the task: {instance.title}",
+#             "jubayerahmmed105@gmail.com",
+#             assigned_emails,
+#             fail_silently = False
+#         )

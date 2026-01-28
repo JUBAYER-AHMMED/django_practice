@@ -26,7 +26,7 @@
             class="grid grid-cols-4 gap-6   p-4 text-sm ">
           <div class="flex gap-3 items-center">
                 <div class="w-2 h-2 {% if task.status == 'COMPLETED' %} bg-green-500 {% elif task.status == 'PENDING' %} bg-red-400 {% elif task.status == 'IN_PROGRESS' %} bg-yellow-500 {% endif %}  rounded-full"></div>
-                <span class="font-semibold">{{task.title}}</span>
+                <a href="{% url "task_details" task.id %}" class="font-semibold">{{task.title}}</a>
             </div>
             <div class="flex justify-between">
               <span class="px-3 py-1 bg-blue-50 rounded-full text-sm font-semibold text-blue-500">
@@ -40,7 +40,8 @@
             </div>
             <div class="flex -space-x-2">
                 {% for emp in task.assigned_to.all %}
-                <div class="w-8 h-8 rounded-full bg-blue-400 flex justify-center items-center text-white text-sm border-2 border-white">{{emp.name|slice:':2'}}</div>{% endfor %}
+                <div class="w-8 h-8 rounded-full bg-blue-400 flex justify-center items-center text-white text-sm border-2 border-white">{{emp.first_name|slice:':2'}}</div>
+                {% endfor %}
             </div>
             <div class="flex justify-between">
             <div class="text-gray-500">{{task.created_at|timesince}}</div>
